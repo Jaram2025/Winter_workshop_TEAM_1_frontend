@@ -158,7 +158,6 @@ Index Of Script
             };
             return icons[extension.toLowerCase()] || icons.default;
         }
-
         // 파일 목록을 가져와 렌더링하는 함수
         function fetchAndRenderFiles() {
             $.ajax({
@@ -240,7 +239,7 @@ Index Of Script
                 pptx: 'ri-file-ppt-line bg-success',
                 default: 'ri-file-line bg-secondary'
             };
-            
+
             $.ajax({
                 url: '/api/files', // 파일 목록을 가져오는 백엔드 API
                 type: 'GET',
@@ -248,22 +247,13 @@ Index Of Script
                 success: function (response) {
                     const tbody = $('#fileTableBody'); // ID가 fileTableBody인 <tbody> 선택
                     tbody.empty(); // 기존 내용 초기화
-    
+                    const jsonObject = JSON.parse(jsonDiconv.response.files)
                     if (response.files && response.files.length > 0) {
                         response.files.forEach(file => {
                             const fileNameParts = file.name.split('.');
                             const fileName = fileNameParts.slice(0, -1).join('.');
                             const fileExtension = fileNameParts.pop().toLowerCase();
-    
-                            const iconClasses = {
-                                pdf: 'ri-file-pdf-line bg-danger',
-                                docx: 'ri-file-word-line bg-primary',
-                                xlsx: 'ri-file-excel-line bg-info',
-                                pptx: 'ri-file-ppt-line bg-success',
-                                default: 'ri-file-line bg-secondary'
-                            };
                             const iconClass = iconClasses[fileExtension] || iconClasses.default;
-    
                             const formattedSize = formatFileSize(file.size);
                             const formattedDate = new Date(file.created_at).toLocaleDateString();
     
@@ -363,7 +353,7 @@ Index Of Script
                 success: function (response) {
                     const tbody = $('#smallTable'); // ID가 smallTable인 <tbody> 선택
                     tbody.empty(); // 기존 내용 초기화
-        
+                    
                     if (response.files && response.files.length > 0) {
                         // 파일 목록에서 상위 6개만 가져오기
                         const limitedFiles = response.files.slice(0, 6);
