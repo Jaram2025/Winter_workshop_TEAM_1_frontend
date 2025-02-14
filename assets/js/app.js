@@ -221,8 +221,8 @@ Index Of Script
             e.preventDefault(); // 기본 폼 제출 동작 방지
     
             // 입력값 가져오기
-            const id = $('input[type="id"]').val().trim();
-            const password = $('input[type="password"]').val().trim();
+            const id = $('#id').val().trim();
+            const password = $('#password').val().trim();
     
             // 입력값 유효성 검사
             if (!id) {
@@ -236,7 +236,7 @@ Index Of Script
     
             // AJAX 요청으로 로그인 수행
             $.ajax({
-                url: '/api/auth/login', // 서버의 로그인 API 엔드포인트
+                url: 'http://web.jaram.net/api/auth/login', // 서버의 로그인 API 엔드포인트
                 type: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify({
@@ -255,10 +255,11 @@ Index Of Script
                     }
                 },
                 error: function (xhr, status, error) {
-                    // 로그인 실패 처리
+                    console.error('XHR 상태:', status);
+                    console.error('XHR 응답:', xhr.responseText);
+                    console.error('에러 메시지:', error);
                     const errorMessage = xhr.responseJSON?.message || '로그인에 실패했습니다.';
                     alert(errorMessage);
-                    console.error('에러:', error);
                 }
             });
         });
