@@ -376,12 +376,7 @@
                 
 
                 // 파일 크기를 포맷하는 함수
-                function formatFileSize(size) {
-                    if (size < 1024) return `${size} B`;
-                    if (size < 1024 * 1024) return `${(size / 1024).toFixed(2)} KB`;
-                    if (size < 1024 * 1024 * 1024) return `${(size / (1024 * 1024)).toFixed(2)} MB`;
-                    return `${(size / (1024 * 1024 * 1024)).toFixed(2)} GB`;
-                }
+                
           // 페이지 로드 시 실행
             $.ajax({
                 url: '/api/files', // 파일 목록을 제공하는 백엔드 API 엔드포인트
