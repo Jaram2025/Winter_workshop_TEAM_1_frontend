@@ -152,8 +152,9 @@ Index Of Script
             e.preventDefault(); // 기본 폼 제출 동작 방지
     
             // 입력값 가져오기
-            const firstName = $('#firstName').val().trim();
-            const lastName = $('#lastName').val().trim();
+            const id = $('#id').val().trim();
+            const first_name = $('#firstName').val().trim();
+            const last_name = $('#lastName').val().trim();
             const email = $('#email').val().trim();
             const password = $('#password').val().trim();
             const confirmPassword = $('#confirmpassword').val().trim();
@@ -162,6 +163,10 @@ Index Of Script
             // 유효성 검사
             if (!firstName || !lastName) {
                 alert('이름과 성을 입력해주세요.');
+                return;
+            }
+            if (!id) {
+                alert('아이디디을 입력해주세요.');
                 return;
             }
             if (!email) {
@@ -187,9 +192,10 @@ Index Of Script
                 type: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify({
-                    firstName: firstName,
-                    lastName: lastName,
+                    first_name: first_name,
+                    last_name: last_name,
                     email: email,
+                    id: id,
                     password: password
                 }),
                 success: function (response) {
@@ -215,12 +221,12 @@ Index Of Script
             e.preventDefault(); // 기본 폼 제출 동작 방지
     
             // 입력값 가져오기
-            const email = $('input[type="email"]').val().trim();
+            const id = $('input[type="id"]').val().trim();
             const password = $('input[type="password"]').val().trim();
     
             // 입력값 유효성 검사
-            if (!email) {
-                alert('이메일을 입력해주세요.');
+            if (!id) {
+                alert('아이디을 입력해주세요.');
                 return;
             }
             if (!password) {
@@ -234,7 +240,7 @@ Index Of Script
                 type: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify({
-                    email: email,
+                    id: id,
                     password: password
                 }),
                 success: function (response) {

@@ -329,6 +329,17 @@
         
         $(document).ready(
             function(jQuery) {
+                function getFileIcon(extension) {
+                    const icons = {
+                        pdf: "../assets/images/layouts/page-7/pdf.png",
+                        docx: "../assets/images/layouts/page-7/docx.png",
+                        xlsx: "../assets/images/layouts/page-7/excel.png",
+                        pptx: "../assets/images/layouts/page-7/pptx.png",
+                        default: "../assets/images/layouts/page-7/file.png",
+                    };
+                    return icons[extension.toLowerCase()] || icons.default;
+                }
+                // 파일 목록을 가져와 렌더링하는 함수
                 $.ajax({
                 url: '/api/auth/me', // 사용자 정보를 가져오는 백엔드 API 엔드포인트
                 method: 'GET',
@@ -337,7 +348,7 @@
                     // API로부터 데이터를 성공적으로 받았을 때 처리
                     if (response) {
                         //  Name
-                        const fullName = `${response.fname} ${response.lname}`;
+                        const fullName = `${response.first_name} ${response.last_name}`;
                         $('#myName').val(fullName);
                         // Email
                         $('#email').val(response.email);
@@ -480,10 +491,10 @@
                                                 <i class="ri-more-fill"></i>
                                             </span>
                                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton-${file.id}">
-                                                <a class="dropdown-item delete-file" href="#" data-safe-filename="${file.path}">
+                                                <a id="deleteBtn" class="dropdown-item delete-file" href="#" data-safe-filename="${file.path}">
                                                     <i class="ri-delete-bin-6-fill mr-2"></i>Delete
                                                 </a>
-                                                <a class="dropdown-item download-file" href="#" data-safe-filename="${file.path}">
+                                                <a id="downloadBtn" class="dropdown-item download-file" href="#" data-safe-filename="${file.path}">
                                                     <i class="ri-file-download-fill mr-2"></i>Download
                                                 </a>
                                             </div>
@@ -504,7 +515,7 @@
             });
         
 
-            $('#fileTableBody').on('click', '.delete-file', function (e) {
+            $('#deleteBtn').on('click', function (e) {
                 e.preventDefault();
                 const safeFilename = $(this).data('safe-filename'); // 파일의 안전한 경로
 
@@ -525,7 +536,7 @@
             });
 
             // 파일 다운로드 기능
-            $('#fileTableBody').on('click', '.download-file', function (e) {
+            $('#downloadBtn').on('click', function (e) {
                 e.preventDefault();
                 const safeFilename = $(this).data('safe-filename'); // 파일의 안전한 경로
 
