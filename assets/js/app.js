@@ -115,32 +115,7 @@ Index Of Script
         /*----------------------------------------------------------
         사용자 정보 가져오기
         -----------------------------------------------------------*/
-        function fetchUserInfo() {
-            $.ajax({
-                url: '/api/auth/me', // 사용자 정보를 가져오는 백엔드 API 엔드포인트
-                method: 'GET',
-                dataType: 'json',
-                success: function (response) {
-                    // API로부터 데이터를 성공적으로 받았을 때 처리
-                    if (response) {
-                        // First Name
-                        $('#fname').val(response.first_name);
-    
-                        // Last Name
-                        $('#lname').val(response.last_name);
-    
-                        // Email
-                        $('#email').val(response.email);
-                    } else {
-                        console.error('No user data found');
-                    }
-                },
-                error: function (xhr, status, error) {
-                    // 에러 발생 시 처리
-                    console.error('Failed to fetch user info:', error);
-                }
-            });
-        }
+        
     
         // 페이지 로드 시 사용자 정보 가져오기 호출
 
@@ -159,62 +134,7 @@ Index Of Script
             return icons[extension.toLowerCase()] || icons.default;
         }
         // 파일 목록을 가져와 렌더링하는 함수
-        function fetchAndRenderFiles() {
-            $.ajax({
-                url: '/api/files', // 파일 목록을 제공하는 백엔드 API 엔드포인트
-                type: 'GET', // GET 요청
-                dataType: 'json', // JSON 형식으로 데이터 처리
-                success: function (response) {
-                    const fileList = $('#fileList');
-                    fileList.empty(); // 기존 목록 제거
-
-                    // 파일 데이터 확인
-                    console.log('파일 데이터:', response);
-
-                    // 파일이 있는 경우 렌더링
-                    if (response.files && response.files.length > 0) {
-                        response.files.forEach(file => {
-                            // 파일 이름과 확장자를 분리
-                            const fileNameParts = file.name.split('.');
-                            const fileName = fileNameParts.slice(0, -1).join('.'); // 확장자를 제외한 파일 이름
-                            const fileExtension = fileNameParts.pop(); // 확장자
-                            const fileIcon = getFileIcon(fileExtension); // 확장자별 아이콘 가져오기
-
-                            const fileItem = `
-                                <div class="col-lg-3 col-md-6 col-sm-6">
-                                    <div class="card card-block card-stretch card-height">
-                                        <div class="card-body image-thumb">
-                                            <div class="mb-4 text-center p-3 rounded iq-thumb">
-                                                <div class="iq-image-overlay"></div>
-                                                <a href="#"
-                                                    data-title="${file.name}" 
-                                                    data-load-file="file" 
-                                                    data-load-target="#resolte-container" 
-                                                    data-url="${file.path}" 
-                                                    data-toggle="modal" 
-                                                    data-target="#exampleModal">
-                                                    <img src="${fileIcon}" class="img-fluid" alt="${file.name}">
-                                                </a>
-                                            </div>
-                                            <h6>${file.name}</h6>
-                                            <p>크기: ${formatFileSize(file.size)}</p>
-                                            <p>생성일: ${new Date(file.created_at).toLocaleDateString()}</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            `;
-                            fileList.append(fileItem);
-                        });
-                    } else {
-                        fileList.append('<p>업로드된 파일이 없습니다.</p>');
-                    }
-                },
-                error: function (xhr, status, error) {
-                    console.error('파일 목록을 가져오는데 실패했습니다.', error);
-                    $('#fileList').html('<p>파일 목록을 로드하는 데 실패했습니다.</p>');
-                }
-            });
-        }
+        
 
         // 파일 크기를 포맷하는 함수
         function formatFileSize(size) {
@@ -225,208 +145,6 @@ Index Of Script
         }
         
         // 페이지가 로드될 때 파일 목록 가져오기
-
-        /*-------------------------------------------------------
-        동적 파일 목록 조회 목록형형
-        ------------------------------------------------------*/
-
-        // 파일 목록을 가져와 렌더링하는 함수
-        function fetchAndRenderFiles2() {
-            const iconClasses = {
-                pdf: 'ri-file-pdf-line bg-danger',
-                docx: 'ri-file-word-line bg-primary',
-                xlsx: 'ri-file-excel-line bg-info',
-                pptx: 'ri-file-ppt-line bg-success',
-                default: 'ri-file-line bg-secondary'
-            };
-
-            $.ajax({
-                url: '/api/files', // 파일 목록을 가져오는 백엔드 API
-                type: 'GET',
-                dataType: 'json',
-                success: function (response) {
-                    const tbody = $('#fileTableBody'); // ID가 fileTableBody인 <tbody> 선택
-                    tbody.empty(); // 기존 내용 초기화
-                    const jsonObject = JSON.parse(jsonDiconv.response.files)
-                    if (response.files && response.files.length > 0) {
-                        response.files.forEach(file => {
-                            const fileNameParts = file.name.split('.');
-                            const fileName = fileNameParts.slice(0, -1).join('.');
-                            const fileExtension = fileNameParts.pop().toLowerCase();
-                            const iconClass = iconClasses[fileExtension] || iconClasses.default;
-                            const formattedSize = formatFileSize(file.size);
-                            const formattedDate = new Date(file.created_at).toLocaleDateString();
-    
-                            const fileRow = `
-                                <tr>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <div class="icon-small ${iconClass.split(' ')[1]} rounded mr-3">
-                                                <i class="${iconClass.split(' ')[0]}"></i>
-                                            </div>
-                                            <div 
-                                                data-load-file="file" 
-                                                data-load-target="#resolte-contaniner" 
-                                                data-url="${file.path}" 
-                                                data-toggle="modal" 
-                                                data-target="#exampleModal" 
-                                                data-title="${file.name}" 
-                                                style="cursor: pointer;">
-                                                ${file.name}
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>Me</td>
-                                    <td>${formattedDate}</td>
-                                    <td>${formattedSize}</td>
-                                    <td>
-                                        <div class="dropdown">
-                                            <span class="dropdown-toggle" id="dropdownMenuButton-${file.id}" data-toggle="dropdown">
-                                                <i class="ri-more-fill"></i>
-                                            </span>
-                                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton-${file.id}">
-                                                <a class="dropdown-item delete-file" href="#" data-safe-filename="${file.path}">
-                                                    <i class="ri-delete-bin-6-fill mr-2"></i>Delete
-                                                </a>
-                                                <a class="dropdown-item download-file" href="#" data-safe-filename="${file.path}">
-                                                    <i class="ri-file-download-fill mr-2"></i>Download
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                            `;
-                            tbody.append(fileRow);
-                        });
-                    } else {
-                        tbody.append('<tr><td colspan="5" class="text-center">파일 목록이 없습니다.</td></tr>');
-                    }
-                },
-                error: function (xhr, status, error) {
-                    console.error('파일 목록을 가져오는 중 오류 발생:', error);
-                    $('#fileTableBody').html('<tr><td colspan="5" class="text-center">파일 목록을 로드하는 데 실패했습니다.</td></tr>');
-                }
-            });
-        }
-
-        $('#fileTableBody').on('click', '.delete-file', function (e) {
-            e.preventDefault();
-            const safeFilename = $(this).data('safe-filename'); // 파일의 안전한 경로
-    
-            if (confirm('정말로 이 파일을 삭제하시겠습니까?')) {
-                $.ajax({
-                    url: `/file/${safe_filename}`, // DELETE 요청을 보낼 엔드포인트
-                    type: 'DELETE',
-                    success: function () {
-                        alert('파일이 성공적으로 삭제되었습니다.');
-                        fetchAndRenderFiles(); // 파일 목록 갱신
-                    },
-                    error: function (xhr, status, error) {
-                        console.error('파일 삭제 중 오류 발생:', error);
-                        alert('파일 삭제에 실패했습니다.');
-                    }
-                });
-            }
-        });
-    
-        // 파일 다운로드 기능
-        $('#fileTableBody').on('click', '.download-file', function (e) {
-            e.preventDefault();
-            const safeFilename = $(this).data('safe-filename'); // 파일의 안전한 경로
-    
-            // GET 요청으로 파일 다운로드
-            const downloadUrl = `/file/${safe_filename}`;
-            const a = document.createElement('a');
-            a.href = downloadUrl;
-            a.download = safeFilename; // 다운로드될 파일 이름
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-        });
-        
-
-        function fetchAndRenderFiles3() {
-            $.ajax({
-                url: '/api/files', // 파일 목록을 가져오는 백엔드 API
-                type: 'GET',
-                dataType: 'json',
-                success: function (response) {
-                    const tbody = $('#smallTable'); // ID가 smallTable인 <tbody> 선택
-                    tbody.empty(); // 기존 내용 초기화
-                    
-                    if (response.files && response.files.length > 0) {
-                        // 파일 목록에서 상위 6개만 가져오기
-                        const limitedFiles = response.files.slice(0, 6);
-        
-                        limitedFiles.forEach(file => {
-                            const fileNameParts = file.name.split('.');
-                            const fileName = fileNameParts.slice(0, -1).join('.');
-                            const fileExtension = fileNameParts.pop().toLowerCase();
-        
-                            const iconClasses = {
-                                pdf: 'ri-file-pdf-line bg-danger',
-                                docx: 'ri-file-word-line bg-primary',
-                                xlsx: 'ri-file-excel-line bg-info',
-                                pptx: 'ri-file-ppt-line bg-success',
-                                default: 'ri-file-line bg-secondary'
-                            };
-                            const iconClass = iconClasses[fileExtension] || iconClasses.default;
-        
-                            const formattedSize = formatFileSize(file.size);
-                            const formattedDate = new Date(file.created_at).toLocaleDateString();
-        
-                            const fileRow = `
-                                <tr>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <div class="icon-small ${iconClass.split(' ')[1]} rounded mr-3">
-                                                <i class="${iconClass.split(' ')[0]}"></i>
-                                            </div>
-                                            <div 
-                                                data-load-file="file" 
-                                                data-load-target="#resolte-contaniner" 
-                                                data-url="${file.path}" 
-                                                data-toggle="modal" 
-                                                data-target="#exampleModal" 
-                                                data-title="${file.name}" 
-                                                style="cursor: pointer;">
-                                                ${file.name}
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>Me</td>
-                                    <td>${formattedDate}</td>
-                                    <td>${formattedSize}</td>
-                                    <td>
-                                        <div class="dropdown">
-                                            <span class="dropdown-toggle" id="dropdownMenuButton-${file.id}" data-toggle="dropdown">
-                                                <i class="ri-more-fill"></i>
-                                            </span>
-                                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton-${file.id}">
-                                                <a class="dropdown-item delete-file" href="#" data-safe-filename="${file.path}">
-                                                    <i class="ri-delete-bin-6-fill mr-2"></i>Delete
-                                                </a>
-                                                <a class="dropdown-item download-file" href="#" data-safe-filename="${file.path}">
-                                                    <i class="ri-file-download-fill mr-2"></i>Download
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                            `;
-                            tbody.append(fileRow);
-                        });
-                    } else {
-                        tbody.append('<tr><td colspan="5" class="text-center">파일 목록이 없습니다.</td></tr>');
-                    }
-                },
-                error: function (xhr, status, error) {
-                    console.error('파일 목록을 가져오는 중 오류 발생:', error);
-                    $('#fileTableBody').html('<tr><td colspan="5" class="text-center">파일 목록을 로드하는 데 실패했습니다.</td></tr>');
-                }
-            });
-        }
-        
         /*--------------------------------------------------------
         회원가입
         ----------------------------------------------------*/
@@ -522,9 +240,9 @@ Index Of Script
                 success: function (response) {
                     if(response.token){
                         // 로그인 성공 처리
-                        setCookie('accessToken',response.token, 7);
+                        
                         alert('로그인 성공!');
-                        console.log('응답 데이터:', response);
+                        
 
                         // 성공 시 대시보드로 리디렉션
                         window.location.href = '/dashboard';
@@ -539,11 +257,11 @@ Index Of Script
             });
         });
 
-        function setCookie(name, value, days) {
-            const date = new Date();
-            date.setTime(date.getTime() + days*24*60*1000);
-            document.cooke = `${name}=${value}; expires=${date.toUTCString()}; path=/; Secure; HttpOnly`;
-        }
+        // function setCookie(name, value, days) {
+        //     const date = new Date();
+        //     date.setTime(date.getTime() + days*24*60*1000);
+        //     document.cooke = `${name}=${value}; expires=${date.toUTCString()}; path=/; Secure; HttpOnly`;
+        // }
         
         /*--------------------------------------------------------------------
         클라이언트 파일 업로드 실행 

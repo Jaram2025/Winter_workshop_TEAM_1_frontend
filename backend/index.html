@@ -39,14 +39,7 @@
     <!-- loader END -->
 
     <!-- access token 확인 -->
-    <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-      $(document).ready(function () {
-        // 페이지 로드 시 실행
-        checkAccessToken();
-        fetchAndRenderFiles3()
-      });
-    </script> -->
+
     <!-- Wrapper Start -->
     <div class="wrapper">
       
@@ -162,8 +155,8 @@
                                                       </a>
                                                   </div>
                                                   <div class="profile-detail mt-3">
-                                                  <h5><a href="../app/user-profile-edit.html">Panny Marco</a></h5>
-                                                  <p>pannymarco@gmail.com</p>
+                                                    <h5><a href="../app/user-profile-edit.html" id="userName" vlaue=""></a></h5>
+                                                    <p id="email" value=""></p>
                                                   </div>
                                                   <a href="auth-sign-in.html" class="btn btn-primary">Sign Out</a>
                                               </div>
@@ -227,141 +220,7 @@
                                     </tr>
                                 </thead>
                                 <tbody id="smallTable">
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                <div class="icon-small bg-danger rounded mr-3">
-                                                    <i class="ri-file-excel-line"></i>
-                                                </div>
-                                                <div data-load-file="file" data-load-target="#resolte-contaniner" data-url="../assets/vendor/doc-viewer/files/demo.pdf" data-toggle="modal" data-target="#exampleModal" data-title="Weekly-report.pdf" style="cursor: pointer;">Weekly-report.pdf</div>
-                                            </div>
-                                        </td>
-                                        <td>Me</td>
-                                        <td>jan 21, 2020 me</td>
-                                        <td>02 MB</td>
-                                        <td>
-                                            <div class="dropdown">
-                                                <span class="dropdown-toggle" id="dropdownMenuButton6" data-toggle="dropdown">
-                                                    <i class="ri-more-fill"></i>
-                                                </span>
-                                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton6">
-                                                    <a class="dropdown-item" href="#"><i class="ri-eye-fill mr-2"></i>View</a>
-                                                    <a class="dropdown-item" href="#"><i class="ri-delete-bin-6-fill mr-2"></i>Delete</a>
-                                                    <a class="dropdown-item" href="#"><i class="ri-pencil-fill mr-2"></i>Edit</a>
-                                                    <a class="dropdown-item" href="#"><i class="ri-printer-fill mr-2"></i>Print</a>
-                                                    <a class="dropdown-item" href="#"><i class="ri-file-download-fill mr-2"></i>Download</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr class="active">
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                <div class="icon-small bg-primary rounded mr-3">
-                                                    <i class="ri-file-download-line"></i>
-                                                </div>
-                                                <div data-load-file="file" data-load-target="#resolte-contaniner" data-url="../assets/vendor/doc-viewer/files/demo.pdf" data-toggle="modal" data-target="#exampleModal" data-title="VueJs.pdf" style="cursor: pointer;">VueJs.pdf</div>
-                                            </div>
-                                        </td>
-                                        <td>Poul Molive</td>
-                                        <td>jan 25, 2020 Poul Molive</td>
-                                        <td>64 MB</td>
-                                        <td>
-                                            <div class="dropdown">
-                                                <span class="dropdown-toggle" id="dropdownMenuButton7" data-toggle="dropdown">
-                                                    <i class="ri-more-fill"></i>
-                                                </span>
-                                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton7">
-                                                    <a class="dropdown-item" href="#"><i class="ri-eye-fill mr-2"></i>View</a>
-                                                    <a class="dropdown-item" href="#"><i class="ri-delete-bin-6-fill mr-2"></i>Delete</a>
-                                                    <a class="dropdown-item" href="#"><i class="ri-pencil-fill mr-2"></i>Edit</a>
-                                                    <a class="dropdown-item" href="#"><i class="ri-printer-fill mr-2"></i>Print</a>
-                                                    <a class="dropdown-item" href="#"><i class="ri-file-download-fill mr-2"></i>Download</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                <div class="icon-small bg-info rounded mr-3">
-                                                    <i class="ri-file-excel-line"></i>
-                                                </div>
-                                                <div data-load-file="file" data-load-target="#resolte-contaniner" data-url="../assets/vendor/doc-viewer/files/demo.docx" data-toggle="modal" data-target="#exampleModal" data-title="Milestone.docx" style="cursor: pointer;">Milestone.docx</div>
-                                            </div>
-                                        </td>
-                                        <td>Me</td>
-                                        <td>Mar 30, 2020 Gail Forcewind</td>
-                                        <td>30 MB</td>
-                                        <td>
-                                            <div class="dropdown">
-                                                <span class="dropdown-toggle" id="dropdownMenuButton8" data-toggle="dropdown">
-                                                    <i class="ri-more-fill"></i>
-                                                </span>
-                                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton8">
-                                                    <a class="dropdown-item" href="#"><i class="ri-eye-fill mr-2"></i>View</a>
-                                                    <a class="dropdown-item" href="#"><i class="ri-delete-bin-6-fill mr-2"></i>Delete</a>
-                                                    <a class="dropdown-item" href="#"><i class="ri-pencil-fill mr-2"></i>Edit</a>
-                                                    <a class="dropdown-item" href="#"><i class="ri-printer-fill mr-2"></i>Print</a>
-                                                    <a class="dropdown-item" href="#"><i class="ri-file-download-fill mr-2"></i>Download</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                <div class="icon-small bg-success rounded mr-3">
-                                                    <i class="ri-file-excel-line"></i>
-                                                </div>
-                                                <div data-load-file="file" data-load-target="#resolte-contaniner" data-url="../assets/vendor/doc-viewer/files/demo.xlsx" data-toggle="modal" data-target="#exampleModal" data-title="Training center.xlsx" style="cursor: pointer;">Training center.xlsx</div>
-                                            </div>
-                                        </td>
-                                        <td>Me</td>
-                                        <td>Mar 30, 2020 Gail Forcewind</td>
-                                        <td>10 MB</td>
-                                        <td>
-                                            <div class="dropdown">
-                                                <span class="dropdown-toggle" id="dropdownMenuButton09" data-toggle="dropdown">
-                                                    <i class="ri-more-fill"></i>
-                                                </span>
-                                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton09">
-                                                    <a class="dropdown-item" href="#"><i class="ri-eye-fill mr-2"></i>View</a>
-                                                    <a class="dropdown-item" href="#"><i class="ri-delete-bin-6-fill mr-2"></i>Delete</a>
-                                                    <a class="dropdown-item" href="#"><i class="ri-pencil-fill mr-2"></i>Edit</a>
-                                                    <a class="dropdown-item" href="#"><i class="ri-printer-fill mr-2"></i>Print</a>
-                                                    <a class="dropdown-item" href="#"><i class="ri-file-download-fill mr-2"></i>Download</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                <div class="icon-small bg-warning rounded mr-3">
-                                                    <i class="ri-file-excel-line"></i>
-                                                </div>
-                                                <div data-load-file="file" data-load-target="#resolte-contaniner" data-url="../assets/vendor/doc-viewer/files/demo.pptx" data-toggle="modal" data-target="#exampleModal" data-title="Flavour.pptx" style="cursor: pointer;">Flavour.pptx</div>
-                                            </div>
-                                        </td>
-                                        <td>Me</td>
-                                        <td>Mar 30, 2020 Gail Forcewind</td>
-                                        <td>10 MB</td>
-                                        <td>
-                                            <div class="dropdown">
-                                                <span class="dropdown-toggle" id="dropdownMenuButton9" data-toggle="dropdown">
-                                                    <i class="ri-more-fill"></i>
-                                                </span>
-                                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton9">
-                                                    <a class="dropdown-item" href="#"><i class="ri-eye-fill mr-2"></i>View</a>
-                                                    <a class="dropdown-item" href="#"><i class="ri-delete-bin-6-fill mr-2"></i>Delete</a>
-                                                    <a class="dropdown-item" href="#"><i class="ri-pencil-fill mr-2"></i>Edit</a>
-                                                    <a class="dropdown-item" href="#"><i class="ri-printer-fill mr-2"></i>Print</a>
-                                                    <a class="dropdown-item" href="#"><i class="ri-file-download-fill mr-2"></i>Download</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                    
                                 </tbody>
                                 </table>
                             </div>
@@ -412,6 +271,137 @@
     <script src="../assets/js/doc-viewer.js"></script>
     <!-- app JavaScript -->
     <script src="../assets/js/app.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        
+        $(document).ready(
+            function(jQuery) {
+                $.ajax({
+                url: '/api/auth/me', // 사용자 정보를 가져오는 백엔드 API 엔드포인트
+                method: 'GET',
+                dataType: 'json',
+                success: function (response) {
+                    // API로부터 데이터를 성공적으로 받았을 때 처리
+                    if (response) {
+                        //  Name
+                        const fullName = `${response.fname} ${response.lname}`;
+                        $('#myName').val(fullName);
+                        // Email
+                        $('#email').val(response.email);
+                    } else {
+                        console.error('No user data found');
+                    }
+                },
+                error: function (xhr, status, error) {
+                    // 에러 발생 시 처리
+                    console.error('Failed to fetch user info:', error);
+                }
+            });
+                // 확장자에 따른 아이콘 URL 반환 함수
+                function getFileIcon(extension) {
+                    const icons = {
+                        pdf: "../assets/images/layouts/page-7/pdf.png",
+                        docx: "../assets/images/layouts/page-7/docx.png",
+                        xlsx: "../assets/images/layouts/page-7/excel.png",
+                        pptx: "../assets/images/layouts/page-7/pptx.png",
+                        default: "../assets/images/layouts/page-7/file.png",
+                    };
+                    return icons[extension.toLowerCase()] || icons.default;
+                }
+                // 파일 목록을 가져와 렌더링하는 함수
+                
+
+                // 파일 크기를 포맷하는 함수
+                function formatFileSize(size) {
+                    if (size < 1024) return `${size} B`;
+                    if (size < 1024 * 1024) return `${(size / 1024).toFixed(2)} KB`;
+                    if (size < 1024 * 1024 * 1024) return `${(size / (1024 * 1024)).toFixed(2)} MB`;
+                    return `${(size / (1024 * 1024 * 1024)).toFixed(2)} GB`;
+                }
+                $.ajax({
+                url: '/api/files', // 파일 목록을 가져오는 백엔드 API
+                type: 'GET',
+                dataType: 'json',
+                success: function (response) {
+                    const tbody = $('#smallTable'); // ID가 smallTable인 <tbody> 선택
+                    tbody.empty(); // 기존 내용 초기화
+                    
+                    if (response.files && response.files.length > 0) {
+                        // 파일 목록에서 상위 6개만 가져오기
+                        const limitedFiles = response.files.slice(0, 6);
+        
+                        limitedFiles.forEach(file => {
+                            const fileNameParts = file.name.split('.');
+                            const fileName = fileNameParts.slice(0, -1).join('.');
+                            const fileExtension = fileNameParts.pop().toLowerCase();
+        
+                            const iconClasses = {
+                                pdf: 'ri-file-pdf-line bg-danger',
+                                docx: 'ri-file-word-line bg-primary',
+                                xlsx: 'ri-file-excel-line bg-info',
+                                pptx: 'ri-file-ppt-line bg-success',
+                                default: 'ri-file-line bg-secondary'
+                            };
+                            const iconClass = iconClasses[fileExtension] || iconClasses.default;
+        
+                            const formattedSize = formatFileSize(file.size);
+                            const formattedDate = new Date(file.created_at).toLocaleDateString();
+        
+                            const fileRow = `
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="icon-small ${iconClass.split(' ')[1]} rounded mr-3">
+                                                <i class="${iconClass.split(' ')[0]}"></i>
+                                            </div>
+                                            <div 
+                                                data-load-file="file" 
+                                                data-load-target="#resolte-contaniner" 
+                                                data-url="${file.path}" 
+                                                data-toggle="modal" 
+                                                data-target="#exampleModal" 
+                                                data-title="${file.name}" 
+                                                style="cursor: pointer;">
+                                                ${file.name}
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>Me</td>
+                                    <td>${formattedDate}</td>
+                                    <td>${formattedSize}</td>
+                                    <td>
+                                        <div class="dropdown">
+                                            <span class="dropdown-toggle" id="dropdownMenuButton-${file.id}" data-toggle="dropdown">
+                                                <i class="ri-more-fill"></i>
+                                            </span>
+                                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton-${file.id}">
+                                                <a class="dropdown-item delete-file" href="#" data-safe-filename="${file.path}">
+                                                    <i class="ri-delete-bin-6-fill mr-2"></i>Delete
+                                                </a>
+                                                <a class="dropdown-item download-file" href="#" data-safe-filename="${file.path}">
+                                                    <i class="ri-file-download-fill mr-2"></i>Download
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            `;
+                            tbody.append(fileRow);
+                        });
+                    } 
+                    else {
+                        tbody.append('<tr><td colspan="5" class="text-center">파일 목록이 없습니다.</td></tr>');
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error('파일 목록을 가져오는 중 오류 발생:', error);
+                    $('#smallTable').html('<tr><td colspan="5" class="text-center">파일 목록을 로드하는 데 실패했습니다.</td></tr>');
+                }
+            });
+        }
+    )()
+    </script>
      <!-- Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-xl" role="document">

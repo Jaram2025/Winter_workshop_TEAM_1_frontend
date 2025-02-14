@@ -40,13 +40,7 @@
      
     <!-- access token 확인 -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <!-- <script>
-      $(document).ready(function () {
-        // 페이지 로드 시 실행
-        checkAccessToken();
-        fetchUserInfo();
-      })
-    </script> -->
+    
     <!-- Wrapper Start -->
     <div class="wrapper">
         <div class="iq-sidebar  sidebar-default ">
@@ -372,6 +366,39 @@
     <script src="../assets/js/doc-viewer.js"></script>
     <!-- app JavaScript -->
     <script src="../assets/js/app.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        
+        $(document).ready(
+            function(jQuery) {
+                $.ajax({
+                url: '/api/auth/me', // 사용자 정보를 가져오는 백엔드 API 엔드포인트
+                method: 'GET',
+                dataType: 'json',
+                success: function (response) {
+                    // API로부터 데이터를 성공적으로 받았을 때 처리
+                    if (response) {
+                        // First Name
+                        $('#fname').val(response.first_name);
+    
+                        // Last Name
+                        $('#lname').val(response.last_name);
+    
+                        // Email
+                        $('#email').val(response.email);
+                    } else {
+                        console.error('No user data found');
+                    }
+                },
+                error: function (xhr, status, error) {
+                    // 에러 발생 시 처리
+                    console.error('Failed to fetch user info:', error);
+                }
+            });
+        }
+    )()
+    </script>
+
      <!-- Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
