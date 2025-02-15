@@ -329,6 +329,7 @@
         
         $(document).ready(
             function(jQuery) {
+                // 확장자에 따른 아이콘 URL 반환 함수
                 function getFileIcon(extension) {
                     const icons = {
                         pdf: "../assets/images/layouts/page-7/pdf.png",
@@ -338,6 +339,16 @@
                         default: "../assets/images/layouts/page-7/file.png",
                     };
                     return icons[extension.toLowerCase()] || icons.default;
+                }
+                // 파일 목록을 가져와 렌더링하는 함수
+                
+
+                // 파일 크기를 포맷하는 함수
+                function formatFileSize(size) {
+                    if (size < 1024) return `${size} B`;
+                    if (size < 1024 * 1024) return `${(size / 1024).toFixed(2)} KB`;
+                    if (size < 1024 * 1024 * 1024) return `${(size / (1024 * 1024)).toFixed(2)} MB`;
+                    return `${(size / (1024 * 1024 * 1024)).toFixed(2)} GB`;
                 }
                 // 파일 목록을 가져와 렌더링하는 함수
                 $.ajax({
@@ -361,191 +372,181 @@
                     console.error('Failed to fetch user info:', error);
                 }
             });
-                // 확장자에 따른 아이콘 URL 반환 함수
-                function getFileIcon(extension) {
-                    const icons = {
-                        pdf: "../assets/images/layouts/page-7/pdf.png",
-                        docx: "../assets/images/layouts/page-7/docx.png",
-                        xlsx: "../assets/images/layouts/page-7/excel.png",
-                        pptx: "../assets/images/layouts/page-7/pptx.png",
-                        default: "../assets/images/layouts/page-7/file.png",
-                    };
-                    return icons[extension.toLowerCase()] || icons.default;
-                }
+                
                 // 파일 목록을 가져와 렌더링하는 함수
                 
 
                 // 파일 크기를 포맷하는 함수
                 
-          // 페이지 로드 시 실행
-            $.ajax({
-                url: '/api/files', // 파일 목록을 제공하는 백엔드 API 엔드포인트
-                type: 'GET', // GET 요청
-                dataType: 'json', // JSON 형식으로 데이터 처리
-                success: function (response) {
-                    const fileList = $('#fileList');
-                    fileList.empty(); // 기존 목록 제거
+                // 페이지 로드 시 실행
+                $.ajax({
+                    url: '/api/drive/file', // 파일 목록을 제공하는 백엔드 API 엔드포인트
+                    type: 'GET', // GET 요청
+                    dataType: 'json', // JSON 형식으로 데이터 처리
+                    success: function (response) {
+                        const fileList = $('#fileList');
+                        fileList.empty(); // 기존 목록 제거
 
-                    // 파일 데이터 확인
-                    console.log('파일 데이터:', response);
+                        // 파일 데이터 확인
+                        console.log('파일 데이터:', response);
 
-                    // 파일이 있는 경우 렌더링
-                    if (response.files && response.files.length > 0) {
-                        response.files.forEach(file => {
-                            // 파일 이름과 확장자를 분리
-                            const fileNameParts = file.name.split('.');
-                            const fileName = fileNameParts.slice(0, -1).join('.'); // 확장자를 제외한 파일 이름
-                            const fileExtension = fileNameParts.pop(); // 확장자
-                            const fileIcon = getFileIcon(fileExtension); // 확장자별 아이콘 가져오기
+                        // 파일이 있는 경우 렌더링
+                        if (response.files && response.files.length > 0) {
+                            response.files.forEach(file => {
+                                // 파일 이름과 확장자를 분리
+                                const fileNameParts = file.name.split('.');
+                                const fileName = fileNameParts.slice(0, -1).join('.'); // 확장자를 제외한 파일 이름
+                                const fileExtension = fileNameParts.pop(); // 확장자
+                                const fileIcon = getFileIcon(fileExtension); // 확장자별 아이콘 가져오기
 
-                            const fileItem = `
-                                <div class="col-lg-3 col-md-6 col-sm-6">
-                                    <div class="card card-block card-stretch card-height">
-                                        <div class="card-body image-thumb">
-                                            <div class="mb-4 text-center p-3 rounded iq-thumb">
-                                                <div class="iq-image-overlay"></div>
-                                                <a href="#"
-                                                    data-title="${file.name}" 
-                                                    data-load-file="file" 
-                                                    data-load-target="#resolte-container" 
-                                                    data-url="${file.path}" 
-                                                    data-toggle="modal" 
-                                                    data-target="#exampleModal">
-                                                    <img src="${fileIcon}" class="img-fluid" alt="${file.name}">
-                                                </a>
+                                const fileItem = `
+                                    <div class="col-lg-3 col-md-6 col-sm-6">
+                                        <div class="card card-block card-stretch card-height">
+                                            <div class="card-body image-thumb">
+                                                <div class="mb-4 text-center p-3 rounded iq-thumb">
+                                                    <div class="iq-image-overlay"></div>
+                                                    <a href="#"
+                                                        data-title="${file.name}" 
+                                                        data-load-file="file" 
+                                                        data-load-target="#resolte-container" 
+                                                        data-url="${file.path}" 
+                                                        data-toggle="modal" 
+                                                        data-target="#exampleModal">
+                                                        <img src="${fileIcon}" class="img-fluid" alt="${file.name}">
+                                                    </a>
+                                                </div>
+                                                <h6>${file.name}</h6>
+                                                <p>크기: ${formatFileSize(file.size)}</p>
+                                                <p>생성일: ${new Date(file.created_at).toLocaleDateString()}</p>
                                             </div>
-                                            <h6>${file.name}</h6>
-                                            <p>크기: ${formatFileSize(file.size)}</p>
-                                            <p>생성일: ${new Date(file.created_at).toLocaleDateString()}</p>
                                         </div>
                                     </div>
-                                </div>
-                            `;
-                            fileList.append(fileItem);
-                        });
-                    } else {
-                        fileList.append('<p>업로드된 파일이 없습니다.</p>');
-                    }
-                },
-                error: function (xhr, status, error) {
-                    console.error('파일 목록을 가져오는데 실패했습니다.', error);
-                    $('#fileList').html('<p>파일 목록을 로드하는 데 실패했습니다.</p>');
-                }
-            });
-            // 파일 목록을 가져와 렌더링하는 함수
-            const iconClasses = {
-                pdf: 'ri-file-pdf-line bg-danger',
-                docx: 'ri-file-word-line bg-primary',
-                xlsx: 'ri-file-excel-line bg-info',
-                pptx: 'ri-file-ppt-line bg-success',
-                default: 'ri-file-line bg-secondary'
-            };
-
-            $.ajax({
-                url: '/api/files', // 파일 목록을 가져오는 백엔드 API
-                type: 'GET',
-                dataType: 'json',
-                success: function (response) {
-                    const tbody = $('#fileTableBody'); // ID가 fileTableBody인 <tbody> 선택
-                    tbody.empty(); // 기존 내용 초기화
-                    const jsonObject = JSON.parse(jsonDiconv.response.files)
-                    if (response.files && response.files.length > 0) {
-                        response.files.forEach(file => {
-                            const fileNameParts = file.name.split('.');
-                            const fileName = fileNameParts.slice(0, -1).join('.');
-                            const fileExtension = fileNameParts.pop().toLowerCase();
-                            const iconClass = iconClasses[fileExtension] || iconClasses.default;
-                            const formattedSize = formatFileSize(file.size);
-                            const formattedDate = new Date(file.created_at).toLocaleDateString();
-    
-                            const fileRow = `
-                                <tr>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <div class="icon-small ${iconClass.split(' ')[1]} rounded mr-3">
-                                                <i class="${iconClass.split(' ')[0]}"></i>
-                                            </div>
-                                            <div 
-                                                data-load-file="file" 
-                                                data-load-target="#resolte-contaniner" 
-                                                data-url="${file.path}" 
-                                                data-toggle="modal" 
-                                                data-target="#exampleModal" 
-                                                data-title="${file.name}" 
-                                                style="cursor: pointer;">
-                                                ${file.name}
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>Me</td>
-                                    <td>${formattedDate}</td>
-                                    <td>${formattedSize}</td>
-                                    <td>
-                                        <div class="dropdown">
-                                            <span class="dropdown-toggle" id="dropdownMenuButton-${file.id}" data-toggle="dropdown">
-                                                <i class="ri-more-fill"></i>
-                                            </span>
-                                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton-${file.id}">
-                                                <a id="deleteBtn" class="dropdown-item delete-file" href="#" data-safe-filename="${file.path}">
-                                                    <i class="ri-delete-bin-6-fill mr-2"></i>Delete
-                                                </a>
-                                                <a id="downloadBtn" class="dropdown-item download-file" href="#" data-safe-filename="${file.path}">
-                                                    <i class="ri-file-download-fill mr-2"></i>Download
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                            `;
-                            tbody.append(fileRow);
-                        });
-                    } else {
-                        tbody.append('<tr><td colspan="5" class="text-center">파일 목록이 없습니다.</td></tr>');
-                    }
-                },
-                error: function (xhr, status, error) {
-                    console.error('파일 목록을 가져오는 중 오류 발생:', error);
-                    $('#fileTableBody').html('<tr><td colspan="5" class="text-center">파일 목록을 로드하는 데 실패했습니다.</td></tr>');
-                }
-            });
-        
-
-            $('#deleteBtn').on('click', function (e) {
-                e.preventDefault();
-                const safeFilename = $(this).data('safe-filename'); // 파일의 안전한 경로
-
-                if (confirm('정말로 이 파일을 삭제하시겠습니까?')) {
-                    $.ajax({
-                        url: `/file/${safe_filename}`, // DELETE 요청을 보낼 엔드포인트
-                        type: 'DELETE',
-                        success: function () {
-                            alert('파일이 성공적으로 삭제되었습니다.');
-                            fetchAndRenderFiles(); // 파일 목록 갱신
-                        },
-                        error: function (xhr, status, error) {
-                            console.error('파일 삭제 중 오류 발생:', error);
-                            alert('파일 삭제에 실패했습니다.');
+                                `;
+                                fileList.append(fileItem);
+                            });
+                        } else {
+                            fileList.append('<p>업로드된 파일이 없습니다.</p>');
                         }
-                    });
-                }
-            });
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('파일 목록을 가져오는데 실패했습니다.', error);
+                        $('#fileList').html('<p>파일 목록을 로드하는 데 실패했습니다.</p>');
+                    }
+                });
+                // 파일 목록을 가져와 렌더링하는 함수
+                const iconClasses = {
+                    pdf: 'ri-file-pdf-line bg-danger',
+                    docx: 'ri-file-word-line bg-primary',
+                    xlsx: 'ri-file-excel-line bg-info',
+                    pptx: 'ri-file-ppt-line bg-success',
+                    default: 'ri-file-line bg-secondary'
+                };
 
-            // 파일 다운로드 기능
-            $('#downloadBtn').on('click', function (e) {
-                e.preventDefault();
-                const safeFilename = $(this).data('safe-filename'); // 파일의 안전한 경로
+                $.ajax({
+                    url: '/api/drive/file', // 파일 목록을 가져오는 백엔드 API
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (response) {
+                        const tbody = $('#fileTableBody'); // ID가 fileTableBody인 <tbody> 선택
+                        tbody.empty(); // 기존 내용 초기화
+                        const jsonObject = JSON.parse(jsonDiconv.response.files)
+                        if (response.files && response.files.length > 0) {
+                            response.files.forEach(file => {
+                                const fileNameParts = file.name.split('.');
+                                const fileName = fileNameParts.slice(0, -1).join('.');
+                                const fileExtension = fileNameParts.pop().toLowerCase();
+                                const iconClass = iconClasses[fileExtension] || iconClasses.default;
+                                const formattedSize = formatFileSize(file.size);
+                                const formattedDate = new Date(file.created_at).toLocaleDateString();
+        
+                                const fileRow = `
+                                    <tr>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <div class="icon-small ${iconClass.split(' ')[1]} rounded mr-3">
+                                                    <i class="${iconClass.split(' ')[0]}"></i>
+                                                </div>
+                                                <div 
+                                                    data-load-file="file" 
+                                                    data-load-target="#resolte-contaniner" 
+                                                    data-url="${file.path}" 
+                                                    data-toggle="modal" 
+                                                    data-target="#exampleModal" 
+                                                    data-title="${file.name}" 
+                                                    style="cursor: pointer;">
+                                                    ${file.name}
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>Me</td>
+                                        <td>${formattedDate}</td>
+                                        <td>${formattedSize}</td>
+                                        <td>
+                                            <div class="dropdown">
+                                                <span class="dropdown-toggle" id="dropdownMenuButton-${file.id}" data-toggle="dropdown">
+                                                    <i class="ri-more-fill"></i>
+                                                </span>
+                                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton-${file.id}">
+                                                    <a id="deleteBtn" class="dropdown-item delete-file" href="#" data-safe-filename="${file.path}">
+                                                        <i class="ri-delete-bin-6-fill mr-2"></i>Delete
+                                                    </a>
+                                                    <a id="downloadBtn" class="dropdown-item download-file" href="#" data-safe-filename="${file.path}">
+                                                        <i class="ri-file-download-fill mr-2"></i>Download
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                `;
+                                tbody.append(fileRow);
+                            });
+                        } else {
+                            tbody.append('<tr><td colspan="5" class="text-center">파일 목록이 없습니다.</td></tr>');
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('파일 목록을 가져오는 중 오류 발생:', error);
+                        $('#fileTableBody').html('<tr><td colspan="5" class="text-center">파일 목록을 로드하는 데 실패했습니다.</td></tr>');
+                    }
+                });
+            
 
-                // GET 요청으로 파일 다운로드
-                const downloadUrl = `/file/${safe_filename}`;
-                const a = document.createElement('a');
-                a.href = downloadUrl;
-                a.download = safeFilename; // 다운로드될 파일 이름
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-            });
-        }
-    )()
+                $('#deleteBtn').on('click', function (e) {
+                    e.preventDefault();
+                    const safeFilename = $(this).data('safe-filename'); // 파일의 안전한 경로
+
+                    if (confirm('정말로 이 파일을 삭제하시겠습니까?')) {
+                        $.ajax({
+                            url: `/api/drive/file/${safe_filename}`, // DELETE 요청을 보낼 엔드포인트
+                            type: 'DELETE',
+                            success: function () {
+                                alert('파일이 성공적으로 삭제되었습니다.');
+                                fetchAndRenderFiles(); // 파일 목록 갱신
+                            },
+                            error: function (xhr, status, error) {
+                                console.error('파일 삭제 중 오류 발생:', error);
+                                alert('파일 삭제에 실패했습니다.');
+                            }
+                        });
+                    }
+                });
+
+                // 파일 다운로드 기능
+                $('#downloadBtn').on('click', function (e) {
+                    e.preventDefault();
+                    const safeFilename = $(this).data('safe-filename'); // 파일의 안전한 경로
+
+                    // GET 요청으로 파일 다운로드
+                    const downloadUrl = `/api/drive/file/${safe_filename}`;
+                    const a = document.createElement('a');
+                    a.href = downloadUrl;
+                    a.download = safeFilename; // 다운로드될 파일 이름
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                });
+            }
+        )()
     </script>
      <!-- Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-hidden="true">

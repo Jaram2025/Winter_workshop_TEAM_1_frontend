@@ -277,6 +277,16 @@
         
         $(document).ready(
             function(jQuery) {
+                
+                
+
+                // 파일 크기를 포맷하는 함수
+                function formatFileSize(size) {
+                    if (size < 1024) return `${size} B`;
+                    if (size < 1024 * 1024) return `${(size / 1024).toFixed(2)} KB`;
+                    if (size < 1024 * 1024 * 1024) return `${(size / (1024 * 1024)).toFixed(2)} MB`;
+                    return `${(size / (1024 * 1024 * 1024)).toFixed(2)} GB`;
+                }
                 function getFileIcon(extension) {
                     const icons = {
                         pdf: "../assets/images/layouts/page-7/pdf.png",
@@ -307,8 +317,8 @@
                 error: function (xhr, status, error) {
                     // 에러 발생 시 처리
                     console.error('Failed to fetch user info:', error);
-                }
-            });
+                    }
+                });
                 // 확장자에 따른 아이콘 URL 반환 함수
                 function getFileIcon(extension) {
                     const icons = {
@@ -321,11 +331,9 @@
                     return icons[extension.toLowerCase()] || icons.default;
                 }
                 // 파일 목록을 가져와 렌더링하는 함수
-                
-
-                
+                                
                 $.ajax({
-                url: '/api/files', // 파일 목록을 가져오는 백엔드 API
+                url: '/api/dive/file', // 파일 목록을 가져오는 백엔드 API
                 type: 'GET',
                 dataType: 'json',
                 success: function (response) {
@@ -403,43 +411,44 @@
                     console.error('파일 목록을 가져오는 중 오류 발생:', error);
                     $('#smallTable').html('<tr><td colspan="5" class="text-center">파일 목록을 로드하는 데 실패했습니다.</td></tr>');
                 }
-            });
-            $('#deleteBtn').on('click', function (e) {
-                e.preventDefault();
-                const safeFilename = $(this).data('safe-filename'); // 파일의 안전한 경로
+                });
+                
+                $('#deleteBtn').on('click', function (e) {
+                    e.preventDefault();
+                    const safeFilename = $(this).data('safe-filename'); // 파일의 안전한 경로
 
-                if (confirm('정말로 이 파일을 삭제하시겠습니까?')) {
-                    $.ajax({
-                        url: `/file/${safe_filename}`, // DELETE 요청을 보낼 엔드포인트
-                        type: 'DELETE',
-                        success: function () {
-                            alert('파일이 성공적으로 삭제되었습니다.');
-                            fetchAndRenderFiles(); // 파일 목록 갱신
-                        },
-                        error: function (xhr, status, error) {
-                            console.error('파일 삭제 중 오류 발생:', error);
-                            alert('파일 삭제에 실패했습니다.');
-                        }
-                    });
-                }
-            });
+                    if (confirm('정말로 이 파일을 삭제하시겠습니까?')) {
+                        $.ajax({
+                            url: `/api/drive/file/${safe_filename}`, // DELETE 요청을 보낼 엔드포인트
+                            type: 'DELETE',
+                            success: function () {
+                                alert('파일이 성공적으로 삭제되었습니다.');
+                                fetchAndRenderFiles(); // 파일 목록 갱신
+                            },
+                            error: function (xhr, status, error) {
+                                console.error('파일 삭제 중 오류 발생:', error);
+                                alert('파일 삭제에 실패했습니다.');
+                            }
+                        });
+                    }
+                });
 
-            // 파일 다운로드 기능
-            $('#downloadBtn').on('click', function (e) {
-                e.preventDefault();
-                const safeFilename = $(this).data('safe-filename'); // 파일의 안전한 경로
+                // 파일 다운로드 기능
+                $('#downloadBtn').on('click', function (e) {
+                    e.preventDefault();
+                    const safeFilename = $(this).data('safe-filename'); // 파일의 안전한 경로
 
-                // GET 요청으로 파일 다운로드
-                const downloadUrl = `/file/${safe_filename}`;
-                const a = document.createElement('a');
-                a.href = downloadUrl;
-                a.download = safeFilename; // 다운로드될 파일 이름
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-            });
-        }
-    )()
+                    // GET 요청으로 파일 다운로드
+                    const downloadUrl = `/api/drive/file/${safe_filename}`;
+                    const a = document.createElement('a');
+                    a.href = downloadUrl;
+                    a.download = safeFilename; // 다운로드될 파일 이름
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                });
+            }
+        )()
     </script>
      <!-- Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-hidden="true">

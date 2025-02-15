@@ -72,15 +72,15 @@ Index Of Script
         }
         
         function getCookie(name) {
-        // 쿠키 가져오기
-        const cookies = document.cookie.split(';');
-        for (let i = 0; i < cookies.length; i++) {
-            const cookie = cookies[i].trim();
-            if (cookie.startsWith(name + '=')) {
-            return cookie.substring(name.length + 1); // 쿠키 값 반환
+            // 쿠키 가져오기
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.startsWith(name + '=')) {
+                return cookie.substring(name.length + 1); // 쿠키 값 반환
+                }
             }
-        }
-        return null; // 쿠키가 없으면 null 반환
+            return null; // 쿠키가 없으면 null 반환
         }
         
         //사용자 정보 가져오기//
@@ -244,12 +244,13 @@ Index Of Script
                     password: password
                 }),
                 success: function (response) {
-                    if(response.token){
+                    if (response.access_token) {
+                        // Access Token을 쿠키에 저장
+                        document.cookie = `access_token=${response.access_token}; path=/; secure; SameSite=Strict`;
+        
                         // 로그인 성공 처리
-                        
                         alert('로그인 성공!');
                         
-
                         // 성공 시 대시보드로 리디렉션
                         window.location.href = '/dashboard';
                     }
@@ -295,7 +296,7 @@ Index Of Script
     
                 // AJAX 요청으로 파일 전송
                 $.ajax({
-                    url: '/api/files/upload', // 서버의 파일 업로드 처리 URL
+                    url: '/api/drive/upload', // 서버의 파일 업로드 처리 URL
                     type: 'POST',
                     data: formData,
                     processData: false, // FormData 객체를 문자열로 변환하지 않음
