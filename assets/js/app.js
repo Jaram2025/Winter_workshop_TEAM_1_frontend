@@ -48,11 +48,27 @@ Index Of Script
 Index Of Script
 ----------------------------------------------*/
 
+"use strict";
+
+// 파일 크기를 포맷하는 함수
+function formatFileSize(size) {
+    if (size < 1024) return `${size} B`;
+    if (size < 1024 * 1024) return `${(size / 1024).toFixed(2)} KB`;
+    if (size < 1024 * 1024 * 1024) return `${(size / (1024 * 1024)).toFixed(2)} MB`;
+    return `${(size / (1024 * 1024 * 1024)).toFixed(2)} GB`;
+}
+function getFileIcon(extension) {
+    const icons = {
+        pdf: "../assets/images/layouts/page-7/pdf.png",
+        docx: "../assets/images/layouts/page-7/docx.png",
+        xlsx: "../assets/images/layouts/page-7/excel.png",
+        pptx: "../assets/images/layouts/page-7/pptx.png",
+        default: "../assets/images/layouts/page-7/file.png",
+    };
+    return icons[extension.toLowerCase()] || icons.default;
+}
+
 (function(jQuery) {
-
-
-
-    "use strict";
 
     jQuery(document).ready(function() {
 
@@ -188,9 +204,9 @@ Index Of Script
     
             // AJAX 요청으로 회원가입 데이터 전송
             $.ajax({
-                url: '/api/auth/signup', // 서버의 회원가입 API 엔드포인트
+                url: 'back.jaram.net/api/auth/signup', // 서버의 회원가입 API 엔드포인트
                 type: 'POST',
-                contentType: 'application/json',
+                contentType: 'back.jaram.net/application/json',
                 data: JSON.stringify({
                     first_name: first_name,
                     last_name: last_name,
@@ -236,9 +252,9 @@ Index Of Script
     
             // AJAX 요청으로 로그인 수행
             $.ajax({
-                url: 'http://web.jaram.net/api/auth/login', // 서버의 로그인 API 엔드포인트
+                url: 'back.jaram.net/api/auth/login', // 서버의 로그인 API 엔드포인트
                 type: 'POST',
-                contentType: 'application/json',
+                contentType: 'back.jaram.net/application/json',
                 data: JSON.stringify({
                     id: id,
                     password: password
@@ -252,7 +268,7 @@ Index Of Script
                         alert('로그인 성공!');
                         
                         // 성공 시 대시보드로 리디렉션
-                        window.location.href = '/dashboard';
+                        window.location.href = 'index.html';
                     }
                 },
                 error: function (xhr, status, error) {
@@ -296,7 +312,7 @@ Index Of Script
     
                 // AJAX 요청으로 파일 전송
                 $.ajax({
-                    url: '/api/drive/upload', // 서버의 파일 업로드 처리 URL
+                    url: 'back.jaram.net/api/drive/upload', // 서버의 파일 업로드 처리 URL
                     type: 'POST',
                     data: formData,
                     processData: false, // FormData 객체를 문자열로 변환하지 않음

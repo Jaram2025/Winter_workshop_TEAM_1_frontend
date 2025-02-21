@@ -63,14 +63,14 @@
                             <input type="file" id="fileInput" style="display: none;" multiple>
                         </li> 
                        <li class="active">
-                              <a href="../backend/index.html" class="">
+                              <a href="index.html" class="">
                                   <i class="las la-home iq-arrow-left"></i><span>Dashboard</span>
                               </a>
                           <ul id="dashboard" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                           </ul>
                        </li>
                        <li class=" ">
-                              <a href="../backend/page-files.html" class="">
+                              <a href="page-files.html" class="">
                                   <i class="lar la-file-alt iq-arrow-left"></i><span>Files</span>
                               </a>
                           <ul id="page-files" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
@@ -148,14 +148,11 @@
                                       <div class="card-body">
                                           <div class="profile-header">
                                               <div class="cover-container text-center">
-                                                  <div class="rounded-circle profile-icon bg-primary mx-auto d-block">
-                                                      P                                                    
-                                                      <a href="">
-                                                          
-                                                      </a>
-                                                  </div>
+                                                <div class="rounded-circle profile-icon bg-primary mx-auto d-block">
+                                                    <a href="user-profile-edit.html">P</a>
+                                                </div>
                                                   <div class="profile-detail mt-3">
-                                                    <h5><a href="../app/user-profile-edit.html" id="userName" vlaue=""></a></h5>
+                                                    <h5><a href="user-profile-edit.html" id="userName" value=""></a></h5>
                                                     <p id="email" value=""></p>
                                                   </div>
                                                   <a href="auth-sign-in.html" class="btn btn-primary">Sign Out</a>
@@ -277,48 +274,9 @@
         
         $(document).ready(
             function(jQuery) {
-                
-                
+                              
 
-                // 파일 크기를 포맷하는 함수
-                function formatFileSize(size) {
-                    if (size < 1024) return `${size} B`;
-                    if (size < 1024 * 1024) return `${(size / 1024).toFixed(2)} KB`;
-                    if (size < 1024 * 1024 * 1024) return `${(size / (1024 * 1024)).toFixed(2)} MB`;
-                    return `${(size / (1024 * 1024 * 1024)).toFixed(2)} GB`;
-                }
-                function getFileIcon(extension) {
-                    const icons = {
-                        pdf: "../assets/images/layouts/page-7/pdf.png",
-                        docx: "../assets/images/layouts/page-7/docx.png",
-                        xlsx: "../assets/images/layouts/page-7/excel.png",
-                        pptx: "../assets/images/layouts/page-7/pptx.png",
-                        default: "../assets/images/layouts/page-7/file.png",
-                    };
-                    return icons[extension.toLowerCase()] || icons.default;
-                }
-                // 파일 목록을 가져와 렌더링하는 함수
-                $.ajax({
-                url: '/api/auth/me', // 사용자 정보를 가져오는 백엔드 API 엔드포인트
-                method: 'GET',
-                dataType: 'json',
-                success: function (response) {
-                    // API로부터 데이터를 성공적으로 받았을 때 처리
-                    if (response) {
-                        //  Name
-                        const fullName = `${response.first_name} ${response.last_name}`;
-                        $('#myName').val(fullName);
-                        // Email
-                        $('#id').val(response.id);
-                    } else {
-                        console.error('No user data found');
-                    }
-                },
-                error: function (xhr, status, error) {
-                    // 에러 발생 시 처리
-                    console.error('Failed to fetch user info:', error);
-                    }
-                });
+                
                 // 확장자에 따른 아이콘 URL 반환 함수
                 function getFileIcon(extension) {
                     const icons = {
@@ -333,7 +291,7 @@
                 // 파일 목록을 가져와 렌더링하는 함수
                                 
                 $.ajax({
-                url: '/api/dive/file', // 파일 목록을 가져오는 백엔드 API
+                url: 'back.jaram.net/api/drive/file', // 파일 목록을 가져오는 백엔드 API
                 type: 'GET',
                 dataType: 'json',
                 success: function (response) {
@@ -419,7 +377,7 @@
 
                     if (confirm('정말로 이 파일을 삭제하시겠습니까?')) {
                         $.ajax({
-                            url: `/api/drive/file/${safe_filename}`, // DELETE 요청을 보낼 엔드포인트
+                            url: `back.jaram.net/api/drive/file/${safe_filename}`, // DELETE 요청을 보낼 엔드포인트
                             type: 'DELETE',
                             success: function () {
                                 alert('파일이 성공적으로 삭제되었습니다.');
@@ -439,7 +397,7 @@
                     const safeFilename = $(this).data('safe-filename'); // 파일의 안전한 경로
 
                     // GET 요청으로 파일 다운로드
-                    const downloadUrl = `/api/drive/file/${safe_filename}`;
+                    const downloadUrl = `back.jaram.net/api/drive/file/${safe_filename}`;
                     const a = document.createElement('a');
                     a.href = downloadUrl;
                     a.download = safeFilename; // 다운로드될 파일 이름

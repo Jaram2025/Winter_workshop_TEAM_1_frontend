@@ -30,13 +30,17 @@
         <link rel="stylesheet" href="../assets/vendor/doc-viewer/include/verySimpleImageViewer/css/jquery.verySimpleImageViewer.css">
         <!--officeToHtml-->
         <link rel="stylesheet" href="../assets/vendor/doc-viewer/include/officeToHtml/officeToHtml.css">  </head>
-  <body class=" color-light ">
+  <body class="  ">
     <!-- loader Start -->
     <div id="loading">
           <div id="loading-center">
           </div>
     </div>
     <!-- loader END -->
+     
+    <!-- access token 확인 -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
     <!-- Wrapper Start -->
     <div class="wrapper">
         <div class="iq-sidebar  sidebar-default ">
@@ -49,59 +53,24 @@
                 </div>
             </div>
             <div class="data-scrollbar" data-scroll="1">
-                <div class="new-create select-dropdown input-prepend input-append">
-                    <div class="btn-group">
-                        <div data-toggle="dropdown">
-                        <div class="search-query selet-caption"><i class="las la-plus pr-2"></i>Create New</div><span class="search-replace"></span>
-                        <span class="caret"><!--icon--></span>
-                        </div>
-                        <ul class="dropdown-menu">
-                            <li><div class="item"><i class="ri-folder-add-line pr-3"></i>New Folder</div></li>
-                            <li><div class="item"><i class="ri-file-upload-line pr-3"></i>Upload Files</div></li>
-                            <li><div class="item"><i class="ri-folder-upload-line pr-3"></i>Upload Folders</div></li>
-                        </ul>
-                    </div>
-                </div>
                 <nav class="iq-sidebar-menu">
                     <ul id="iq-sidebar-toggle" class="iq-menu">
+                        <li class=" ">
+                            <a id="uploadFiles" class="item" >
+                                <i class="ri-file-upload-line pr-3"></i>
+                                Upload Files
+                            </a>
+                            <input type="file" id="fileInput" style="display: none;" multiple>
+                        </li> 
                          <li class="active">
-                                <a href="../backend/index.html" class="">
+                                <a href="index.html" class="">
                                     <i class="las la-home iq-arrow-left"></i><span>Dashboard</span>
                                 </a>
                             <ul id="dashboard" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                             </ul>
                          </li>
                          <li class=" ">
-                            <a href="#mydrive" class="collapsed" data-toggle="collapse" aria-expanded="false">
-                                <i class="las la-hdd"></i><span>My Drive</span>
-                                <i class="las la-angle-right iq-arrow-right arrow-active"></i>
-                                <i class="las la-angle-down iq-arrow-right arrow-hover"></i>
-                            </a>
-                            <ul id="mydrive" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                                    <li class=" ">
-                                            <a href="../backend/page-alexa.html">
-                                                <i class="lab la-blogger-b"></i><span>Alexa Workshop</span>
-                                            </a>
-                                    </li>
-                                    <li class=" ">
-                                            <a href="../backend/page-android.html">
-                                                <i class="las la-share-alt"></i><span>Android</span>
-                                            </a>
-                                    </li>
-                                    <li class=" ">
-                                            <a href="../backend/page-brightspot.html">
-                                                <i class="las la-icons"></i><span>Brightspot</span>
-                                            </a>
-                                    </li>
-                                    <li class=" ">
-                                            <a href="../backend/page-ionic.html">
-                                                <i class="las la-icons"></i><span>Ionic Chat App</span>
-                                            </a>
-                                    </li>
-                            </ul>
-                         </li>
-                         <li class=" ">
-                                <a href="../backend/page-files.html" class="">
+                                <a href="page-files.html" class="">
                                     <i class="lar la-file-alt iq-arrow-left"></i><span>Files</span>
                                 </a>
                             <ul id="page-files" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
@@ -180,14 +149,11 @@
                                             <div class="profile-header">
                                                 <div class="cover-container text-center">
                                                     <div class="rounded-circle profile-icon bg-primary mx-auto d-block">
-                                                        P                                                    
-                                                        <a href="">
-                                                            
-                                                        </a>
+                                                        <a href="user-profile-edit.html">P</a>
                                                     </div>
                                                     <div class="profile-detail mt-3">
-                                                    <h5><a href="../app/user-profile-edit.html">Panny Marco</a></h5>
-                                                    <p>pannymarco@gmail.com</p>
+                                                    <h5><a href="user-profile-edit.html" id="userName" value=""></a></h5>
+                                                    <p id="email" value=""></p>
                                                     </div>
                                                     <a href="auth-sign-in.html" class="btn btn-primary">Sign Out</a>
                                                 </div>
@@ -202,11 +168,56 @@
                 </nav>
             </div>
         </div>
+      </div>
       <div class="content-page">
       <div class="container-fluid">
          <div class="row">
             <div class="col-lg-12">
-               Here Add Your HTML Content.....
+               <div class="iq-edit-list-data">
+                  <div class="tab-content">
+                     <div class="tab-pane fade active show" id="personal-information" role="tabpanel">
+                        <div class="card">
+                           <div class="card-header d-flex justify-content-between">
+                              <div class="iq-header-title">
+                                 <h4 class="card-title">Personal Information</h4>
+                              </div>
+                           </div>
+                           <div class="card-body">
+                              <form>
+                                 <div class="form-group row align-items-center">
+                                    <div class="col-md-12">
+                                       <div class="profile-img-edit">
+                                          <div class="crm-profile-img-edit">
+                                             <img class="crm-profile-pic rounded-circle avatar-100" src="../assets/images/user/11.png" alt="profile-pic">
+                                             <div class="crm-p-image bg-primary">
+                                                <i class="las la-pen upload-button"></i>
+                                                <input class="file-upload" type="file" accept="image/*">
+                                             </div>
+                                          </div>                                          
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <div class=" row align-items-center">
+                                    <div class="form-group col-sm-6">
+                                       <label for="fname">First Name:</label>
+                                       <input type="text" class="form-control" id="fname" value="">
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                       <label for="lname">Last Name:</label>
+                                       <input type="text" class="form-control" id="lname" value="">
+                                    </div>
+                                    <div class="form-group col-sm-12">
+                                        <label for="email">Email:</label>
+                                        <input type="email" class="form-control" id="email" value="">
+                                    </div>
+                                 </div>
+                                 
+                              </form>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
             </div>
          </div>
       </div>
@@ -252,6 +263,39 @@
     <script src="../assets/js/doc-viewer.js"></script>
     <!-- app JavaScript -->
     <script src="../assets/js/app.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        
+        $(document).ready(
+            function(jQuery) {
+                $.ajax({
+                url: 'back.jaram.net/api/auth/me', // 사용자 정보를 가져오는 백엔드 API 엔드포인트
+                method: 'GET',
+                dataType: 'json',
+                success: function (response) {
+                    // API로부터 데이터를 성공적으로 받았을 때 처리
+                    if (response) {
+                        // First Name
+                        $('#fname').val(response.first_name);
+    
+                        // Last Name
+                        $('#lname').val(response.last_name);
+    
+                        // Email
+                        $('#email').val(response.email);
+                    } else {
+                        console.error('No user data found');
+                    }
+                },
+                error: function (xhr, status, error) {
+                    // 에러 발생 시 처리
+                    console.error('Failed to fetch user info:', error);
+                }
+            });
+        }
+    )()
+    </script>
+
      <!-- Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
