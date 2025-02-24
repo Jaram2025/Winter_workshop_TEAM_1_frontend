@@ -302,31 +302,32 @@ function getFileIcon(extension) {
         -----------------------------------------------------------------------*/
         $('#fileInput').on('change', function () {
             const files = this.files;
-            if (files.length > 0) {
-                const formData = new FormData();
-    
-                // 선택된 파일 추가
-                for (let i = 0; i < files.length; i++) {
-                    formData.append('files[]', files[i]);
-                }
-    
-                // AJAX 요청으로 파일 전송
-                $.ajax({
-                    url: 'back.jaram.net/api/drive/upload', // 서버의 파일 업로드 처리 URL
-                    type: 'POST',
-                    data: formData,
-                    processData: false, // FormData 객체를 문자열로 변환하지 않음
-                    contentType: false, // 기본 Content-Type 설정을 사용하지 않음
-                    success: function (response) {
-                        alert('파일 업로드 성공!');
-                        console.log('서버 응답:', response);
-                    },
-                    error: function (xhr, status, error) {
-                        alert('파일 업로드 실패.');
-                        console.error('에러:', error);
-                    },
-                });
+            const file = this.files[0];
+            if (!file) {
+                alert('파일을 선택해주세요!');
+                return;
             }
+
+            const formData = new FormData();
+            // 백엔드에서 파일 필드를 "file_body"로 기대하므로 key 이름을 "file_body"로 지정합니다.
+            formData.append('file_body', file);
+        
+            // AJAX 요청으로 파일 전송
+            $.ajax({
+                url: 'back.jaram.net/api/drive/upload', // 서버의 파일 업로드 처리 URL
+                type: 'POST',
+                data: formData,
+                processData: false, // FormData 객체를 문자열로 변환하지 않음
+                contentType: false, // 기본 Content-Type 설정을 사용하지 않음
+                success: function (response) {
+                    alert('파일 업로드 성공!');
+                    console.log('서버 응답:', response);
+                },
+                error: function (xhr, status, error) {
+                    alert('파일 업로드 실패: ' + error);
+                    console.error(xhr.responseText);
+                }
+            });
         });
         /*---------------------------------------------------------------------
         Tooltip
